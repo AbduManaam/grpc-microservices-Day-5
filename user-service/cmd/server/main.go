@@ -21,14 +21,14 @@ func main(){
 	}
 
 	s:=grpc.NewServer(
-		grpc.UnaryInterceptor(interceptor.AuthInterceptor)
+		grpc.UnaryInterceptor(interceptor.AuthInterceptor),
 	)
 
 	database:=db.NewDB()
 	repo:= &repository.Repo{DB:database}
-	service:=&service.Service{Repo:repo}
+	svc:=&service.Service{Repo:repo}
 
-	  userpb.RegisterUserServiceServer(s, svc)
+	userpb.RegisterUserServiceServer(s, svc)
 
     log.Println("User Service running on :50051")
     s.Serve(lis)

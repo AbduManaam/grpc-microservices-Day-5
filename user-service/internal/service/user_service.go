@@ -2,12 +2,14 @@ package service
 
 import (
 	"context"
+	"errors"
 	userpb "proto/gen/user"
 	"user-service/internal/auth"
 	"user-service/internal/repository"
 )
 
 type Service struct {
+	userpb.UnimplementedUserServiceServer
 	Repo *repository.Repo
 }
 
@@ -22,13 +24,13 @@ func(c *Service)Register(ctx context.Context,req *userpb.RegisterRequest)(*userp
 		return nil,err
 	}
 
-	return &userpb.RegisterResponse{status:"created"},nil
+	return &userpb.RegisterResponse{Status:"created"},nil
 
 }
 
 func(c *Service)Login(ctx context.Context,req *userpb.LoginRequest)(*userpb.LoginResponse, error){
 
-	u,err:=c.Repo.GetByUsername(req.Username)
+	u,err:=c.Repo.GetByUserName(req.Username)
 	if err!=nil{
 		return nil,err
 	}
@@ -36,7 +38,7 @@ func(c *Service)Login(ctx context.Context,req *userpb.LoginRequest)(*userpb.Logi
 	if !auth.CheckPassword(req.Password,u.Password){
 		return nil,errors.New("Invalid Credintial")
 	}
-	token,err:=auth.GenerateToken(u.ID)
+	token,err:=auth.GenerateToken(u.Id)
     if err != nil {
         return nil, err
     }
@@ -49,5 +51,5 @@ func (s *Service) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*use
     if err != nil {
         return nil, err
     }
-    return &userpb.GetUserResponse{UserId: u.ID, Name: u.Username}, nil
+    return &userpb.GetUserResponse{UserId: u.Id, Name: u.Username}, nil
 }
