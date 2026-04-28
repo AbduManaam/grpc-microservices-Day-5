@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-    clients.InitUserClient("user-service:50051")
-    clients.InitOrderClient("order-service:50052")
+    clients.InitUserClient("localhost:50051")
+    clients.InitOrderClient("localhost:50052")
 
     r := gin.Default()
 

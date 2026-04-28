@@ -21,7 +21,7 @@ func main() {
 	s:= grpc.NewServer()
 	database:= db.NewDB()
 	repo:= &repository.Repo{DB: database}
-	userClient:=client.NewUserClient("user-service:50051")
+	userClient:=client.NewUserClient("localhost:50051")
 	svc:= &service.Service{Repo: repo,UserClient: userClient}
 
 	orderpb.RegisterOrderServiceServer(s,svc)

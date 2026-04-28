@@ -10,3 +10,13 @@ tidy:
 
 run:
 	docker-compose -f deployments/docker-compose.yml up --build
+
+run-local:
+	go run ./user-service/cmd/server &
+	go run ./order-service/cmd/server &
+	go run ./api-gateway/main.go
+
+stop-local:
+	pkill -f "user-service" || true
+	pkill -f "order-service" || true
+	pkill -f "api-gateway" || true	

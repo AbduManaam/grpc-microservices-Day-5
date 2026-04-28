@@ -6,6 +6,7 @@ import (
 	userpb "proto/gen/user"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type UserClient struct {
@@ -13,7 +14,7 @@ type UserClient struct {
 }
 
 func NewUserClient(addr string) *UserClient {
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	conn, err := grpc.NewClient(addr,  grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatal(err)
 	}

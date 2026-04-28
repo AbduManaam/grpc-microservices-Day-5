@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"order-service/internal/client"
 	"order-service/internal/repository"
 	orderpb "proto/gen/order"
@@ -17,8 +16,13 @@ type Service struct {
 func (s *Service) CreateOrder(ctx context.Context, req *orderpb.CreateOrderRequest) (*orderpb.CreateOrderResponse, error) {
 
 	if err := s.UserClient.ValidateUser(req.UserId); err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	status := s.Repo.Create(req.UserId)
+
+	status, err := s.Repo.Create(req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
 	return &orderpb.CreateOrderResponse{Status: status}, nil
 }
