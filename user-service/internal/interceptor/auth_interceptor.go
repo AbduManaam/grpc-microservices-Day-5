@@ -26,7 +26,6 @@ func AuthInterceptor(
 	if strings.Contains(info.FullMethod, "Login") ||
 		strings.Contains(info.FullMethod, "Register") ||
 		strings.Contains(info.FullMethod, "GetUser") {
-		fmt.Println("DEBUG: Skipping auth for method:", info.FullMethod)
 		return handler(ctx, req)
 	}
 

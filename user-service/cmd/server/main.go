@@ -28,6 +28,7 @@ func main(){
 	repo:= &repository.Repo{DB:database}
 	svc:=&service.Service{Repo:repo}
 
+	//When a request comes for UserService, use svc to handle it
 	userpb.RegisterUserServiceServer(s, svc)
 
     log.Println("User Service running on :50051")
