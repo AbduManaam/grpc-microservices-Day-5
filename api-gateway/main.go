@@ -2,6 +2,7 @@ package main
 
 import (
     "api-gateway/clients"
+    "api-gateway/config"
     "api-gateway/handlers"
     "api-gateway/middleware"
 
@@ -9,8 +10,10 @@ import (
 )
 
 func main() {
-    clients.InitUserClient("localhost:50051")
-    clients.InitOrderClient("localhost:50052")
+	userAddr := config.GetEnv("USER_SERVICE_ADDR", "localhost:50051")
+	orderAddr := config.GetEnv("ORDER_SERVICE_ADDR", "localhost:50052")
+	clients.InitUserClient(userAddr)
+	clients.InitOrderClient(orderAddr)
 
     r := gin.Default()
 
@@ -26,5 +29,6 @@ func main() {
         protected.POST("/order",   handlers.CreateOrder)
     }
 
-    r.Run(":8080")
+    port := config.GetEnv("PORT", "8080")
+    r.Run(":" + port)
 }
